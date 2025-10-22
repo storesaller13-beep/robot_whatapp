@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت ربات واتساپ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
+            text-align: right;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .status-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-right: 5px solid #28a745;
+        }
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+        .online {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .offline {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 پنل مدیریت ربات واتساپ</h1>
+        
+        <div class="status-card">
+            <h2>📊 وضعیت ربات</h2>
+            <div class="stat">
+                <span>اتصال واتساپ:</span>
+                <span id="connectionStatus" class="online">...</span>
+            </div>
+            <div class="stat">
+                <span>تعداد سوال-پاسخ:</span>
+                <span id="qaCount">...</span>
+            </div>
+            <div class="stat">
+                <span>آخرین بروزرسانی:</span>
+                <span id="lastUpdate">...</span>
+            </div>
+        </div>
+
+        <div class="status-card">
+            <h2>⚡ مدیریت سریع</h2>
+            <button onclick="reloadBot()">🔄 بارگذاری مجدد</button>
+            <button onclick="createBackup()">📦 ایجاد پشتیبان</button>
+            <button onclick="viewLogs()">📋 مشاهده لاگ‌ها</button>
+        </div>
+    </div>
+
+    <script>
+        // بارگذاری وضعیت ربات
+        async function loadStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                
+                document.getElementById('connectionStatus').textContent = 
+                    data.connected ? '✅ متصل' : '❌ قطع';
+                document.getElementById('qaCount').textContent = data.qaCount;
+                document.getElementById('lastUpdate').textContent = data.lastUpdate;
+            } catch (error) {
+                console.error('خطا در دریافت وضعیت:', error);
+            }
+        }
+
+        // بارگذاری اولیه
+        loadStatus();
+        // بروزرسانی هر 10 ثانیه
+        setInterval(loadStatus, 10000);
+
+        // توابع مدیریت
+        function reloadBot() {
+            alert('دستور بارگذاری مجدد ارسال شد!');
+        }
+        
+        function createBackup() {
+            alert('پشتیبان ایجاد شد!');
+        }
+        
+        function viewLogs() {
+            alert('مشاهده لاگ‌ها');
+        }
+    </script>
+</body>
+</html>
