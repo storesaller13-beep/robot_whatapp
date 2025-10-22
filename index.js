@@ -173,7 +173,7 @@ async function connectToWhatsApp() {
             
             if (qr) {
                 console.log('\n📱 لطفاً QR Code رو اسکن کنید:');
-                qrcode.generate(qr, { small: true });
+                qrcode.generate(qr, { small: false });
                 console.log('⏳ منتظر اتصال...\n');
             }
 
@@ -308,5 +308,6 @@ setInterval(() => {
         }
     }
 }, 600000);
+
 
 console.log('✨ ربات با قابلیت‌های پیشرفته راه‌اندازی شد!');
