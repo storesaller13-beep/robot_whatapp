@@ -1,5 +1,6 @@
 const { default: makeWASocket, useMultiFileAuthState, delay } = require('@whiskeysockets/baileys');
 const qrcode = require('qrcode-terminal');
+const QRCode = require('qrcode'); // اضافه شده
 const fs = require('fs');
 const path = require('path');
 
@@ -172,8 +173,15 @@ async function connectToWhatsApp() {
             const { connection, lastDisconnect, qr } = update;
             
             if (qr) {
-                console.log('\n📱 لطفاً QR Code رو اسکن کنید:');
-                qrcode.generate(qr, { small: false });
+                console.log('\n📱 در حال تولید لینک QR کد...');
+                try {
+                    const qrUrl = await QRCode.toDataURL(qr);
+                    console.log('🔗 لینک QR کد:', qrUrl);
+                    console.log('📸 این لینک رو در مرورگر باز کنید و اسکن کنید');
+                } catch (error) {
+                    console.log('❌ خطا در تولید QR لینک، نمایش نسخه متنی:');
+                    qrcode.generate(qr, { small: false });
+                }
                 console.log('⏳ منتظر اتصال...\n');
             }
 
@@ -308,6 +316,5 @@ setInterval(() => {
         }
     }
 }, 600000);
-
 
 console.log('✨ ربات با قابلیت‌های پیشرفته راه‌اندازی شد!');
